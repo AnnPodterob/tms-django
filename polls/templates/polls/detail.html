@@ -11,15 +11,32 @@
 {% block title %}Poll{% endblock %}
 
 {% block body %}
-    <a href="/polls-app">
-        <img src="images.jpeg">
-    </a>
-    <h1>{{ question.question_text }}</h1>
-    <ul>
-        {% for choice in question.choices.all %}
-            <li>{{ choice.choice_text }}</li>
-        {% endfor %}
-    </ul>
+<!--    <a href="/polls-app">-->
+<!--        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVeXmmgy4UHViI1nvK0X5Mddk3b_Kx9hkEug&usqp=CAU">-->
+<!--    </a>-->
+<!--    <h1>{{ question.question_text }}</h1>-->
+<!--    <ul>-->
+<!--        {% for choice in question.choices.all %}-->
+<!--            <li>{{ choice.choice_text }}</li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h1>{{ question.question_text }}</h1></legend>
+            {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+            {% endif %}
+            {% for choice in question.choices.all|dictsort:'choice_text' %}
+                <input type="radio" name="choice" value="{{ choice.id }}"
+                       id="choice-{{ forloop.counter }}"/>
+                <label for="choice-{{ forloop.counter }}">
+                    {{ choice.choice_text }}
+                </label><br>
+            {% endfor %}
+        </fieldset>
+        <input type="submit" value="Vote"/>
+    </form>
 {% endblock %}
 </body>
 </html>

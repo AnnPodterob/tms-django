@@ -1,0 +1,19 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--</body>-->
+<!--</html>-->
+{% extends 'polls/base.html' %}
+
+{% block body %}
+    <form action="{% url 'polls:create' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create"/>
+    </form>
+{% endblock %}
