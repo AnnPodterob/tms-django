@@ -11,10 +11,12 @@ def index(request: HttpRequest):
     context = {'articles_list': articles}
     return render(request, 'articles/index.html', context)
 
+
 def detail(request, article_id: int):
     article = get_object_or_404(Articles, id=article_id)
     context = {'article': article}
     return render(request, 'articles/detail.html', context)
+
 
 
 def like(request, article_id: int):
