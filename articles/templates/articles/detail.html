@@ -14,8 +14,10 @@
     <h1>{{article.title}}</h1>
     <h2>Author: {{article.author}}</h2>
     <p>{{article.text}}</p>
+    <p><strong>Likes: {{ article.like_count }}</strong></p>
     <form action ="{% url 'articles:like' article.id %}" method="post">
         {% csrf_token %}
+        <input type="hidden" name="article_id" value="{{ article.id }}"/>
         <input type = "submit" value="Like"/>
     </form>
 

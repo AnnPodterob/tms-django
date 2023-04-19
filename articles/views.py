@@ -18,10 +18,10 @@ def detail(request, article_id: int):
     return render(request, 'articles/detail.html', context)
 
 
-
 def like(request, article_id: int):
+    assert request.method == 'POST'
     article = get_object_or_404(Articles, id=article_id)
-    article_id = request.POST['article_id']
-    article.likes += 1
+    # article_id = request.POST['article_id']
+    article.like_count += 1
     article.save()
     return redirect('articles:detail', article_id)

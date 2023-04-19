@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+</head>
+<body>
+
+{% extends 'shop/base.html' %}
+
+{% block content %}
+  <h1>Categories</h1>
+  <ul>
+    {% for category in categories %}
+      <li><a href="{% url 'category' category.id %}">{{ category.name }}</a>
+        <ul>
+          {% for product in category.product_set.all %}
+            <li><a href="{% url 'product' product.id %}">{{ product.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+</body>
+</html>
