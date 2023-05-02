@@ -25,7 +25,7 @@ class ArticleModelTest(TestCase):
         response = self.client.get(reverse('articles:detail', args=[article.id]))
         self.assertEquals(response.status_code, 404)
 
-    def test_contains_text(self):
+    def test_cont_text(self):
         article = create_article('title', 'text', 'author', 5)
         response = self.client.get(reverse('articles:detail', args=[article.id]))
         self.assertEquals(response.status_code, 200)

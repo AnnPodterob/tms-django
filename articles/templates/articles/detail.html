@@ -12,8 +12,12 @@
 {% block body %}
 
     <h1>{{article.title}}</h1>
-    <h2>Author: {{article.author}}</h2>
     <p>{{article.text}}</p>
+    <ul>
+        {% for author in article.authors.all %}
+            <li><a href="{% url 'articles:author_detail' author.id %}">{{ author.first_name }} {{ author.last_name }}</a></li>
+        {% endfor %}
+    </ul>
     <p><strong>Likes: {{ article.like_count }}</strong></p>
     <form action ="{% url 'articles:like' article.id %}" method="post">
         {% csrf_token %}

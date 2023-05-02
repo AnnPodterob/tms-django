@@ -57,3 +57,24 @@ class QuestionErrorViewTests(TestCase):
         question = create_question('QuestionP', -20)
         response = self.client.get(reverse('polls:detail', args=[question.id]))
         self.assertContains(response, question.question_text)
+
+
+
+from django.db import transaction
+
+@transaction.atomic
+def create_questions(raising):
+    Question.objects.create(pub_date=timezone.now())
+    if raising:
+        raise Exception()
+    Question.objects.create(pub_date=timezone.now())
+
+class TestTransaction(TestCase):
+    def test_transaction(self):
+        self.assertEqual(Question.objects.count(), 0)
+        create_questions(False)
+        self.assertEqual(Question.objects.count(), 2)
+        self.assertRaises(Exception, lambda: create_questions(True))
+
+        # check question count is still 2
+        self.assertEqual(Question.objects.count(), 2)

@@ -1,0 +1,12 @@
+{% extends 'articles/base.html' %}
+
+{% block content %}
+  <h1>{{ author.first_name }} {{ author.last_name }}</h1>
+  <p>Date of birth: {{ author.date_of_birth }}</p>
+  <h2>Articles:</h2>
+  <ul>
+    {% for article in articles %}
+      <li><a href="{% url 'detail' article.id %}">{{ article.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -5,11 +5,21 @@ from django.http import Http404
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.db.models import signals
 
 from .models import Question, Choice
 from .forms import QuestionForm
 
 # Create your views here.
+
+def logging_callback(**kwargs):
+    print(f"Log: {kwargs}")
+
+signals.pre_init.connect(logging_callback)
+signals.post_init.connect(logging_callback)
+signals.pre_save.connect(logging_callback)
+signals.post_save.connect(logging_callback)
+
 
 def index(request):
     questions = Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
@@ -29,6 +39,10 @@ def detail(request, question_id: int):
     context = {'question': question}
     return render(request, 'polls/detail.html', context)
 
+
+# from django.db import transaction
+#
+# @transaction.non_atomic_requests
 def vote(request, question_id: int):
     question = get_object_or_404(Question, id=question_id)
     try:
@@ -63,3 +77,4 @@ def create_question(request):
     else:
         form = QuestionForm()
     return render(request, 'polls/create_question.html', {'form': form})
+
