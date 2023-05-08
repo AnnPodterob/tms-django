@@ -15,10 +15,10 @@ from .forms import QuestionForm
 def logging_callback(**kwargs):
     print(f"Log: {kwargs}")
 
-signals.pre_init.connect(logging_callback)
-signals.post_init.connect(logging_callback)
-signals.pre_save.connect(logging_callback)
-signals.post_save.connect(logging_callback)
+# signals.pre_init.connect(logging_callback)
+# signals.post_init.connect(logging_callback)
+# signals.pre_save.connect(logging_callback)
+# signals.post_save.connect(logging_callback)
 
 
 def index(request):

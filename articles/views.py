@@ -1,14 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpRequest, Http404
-
-# Create your views here.
-from django.http import HttpRequest
 from .models import Articles
 
 
-def index(request: HttpRequest):
-    articles = Articles.objects
-    context = {'articles_list': articles}
+def index(request):
+    articles = Articles.objects.all()
+    context = {'all_articles': articles}
     return render(request, 'articles/index.html', context)
 
 
@@ -18,10 +14,10 @@ def detail(request, article_id: int):
     return render(request, 'articles/detail.html', context)
 
 
-def like(request, article_id: int):
+def like(request):
     assert request.method == 'POST'
+    article_id = request.POST['article_id']
     article = get_object_or_404(Articles, id=article_id)
-    # article_id = request.POST['article_id']
     article.like_count += 1
     article.save()
-    return redirect('articles:detail', article_id)
+    return redirect('articles:detail', article.id)

@@ -1,8 +1,11 @@
 {% extends 'shop/base.html' %}
 
-{% block content %}
-  <h1>{{ product.name }}</h1>
-  <p>Category: <a href="{% url 'category' product.category.id %}">{{ product.category.name }}</a></p>
-  <p>Description: {{ product.description }}</p>
-  <p>Price: {{ product.price }}</p>
+{% block body %}
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.description }}</p>
+    <p>Category:
+        <a href="{% url 'shop:category_detail' product.category.id %}">
+            {{ product.category.name }}
+        </a>
+    </p>
 {% endblock %}

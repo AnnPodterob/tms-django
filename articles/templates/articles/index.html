@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Articles App</title>
-</head>
-<body>
-  {% extends 'articles/base.html' %}
+{% extends 'articles/base.html' %}
 
 {% block body %}
     {% if all_articles %}
@@ -19,6 +12,3 @@
         <p>There are no articles</p>
     {% endif %}
 {% endblock %}
-
-</body>
-</html>

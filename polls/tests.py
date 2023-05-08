@@ -78,3 +78,4 @@ class TestTransaction(TestCase):
 
         # check question count is still 2
         self.assertEqual(Question.objects.count(), 2)
+

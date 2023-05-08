@@ -1,27 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Shop</title>
-</head>
-<body>
-
-{% extends 'shop/base.html' %}
-
-{% block content %}
-  <h1>Categories</h1>
-  <ul>
-    {% for category in categories %}
-      <li><a href="{% url 'category' category.id %}">{{ category.name }}</a>
+{% block body %}
+    {% if not categories %}
+        <h1>There are no categories</h1>
+    {% else %}
+        <h1>Main page</h1>
         <ul>
-          {% for product in category.product_set.all %}
-            <li><a href="{% url 'product' product.id %}">{{ product.name }}</a></li>
-          {% endfor %}
+            {% for category in categories %}
+                <li>
+                    <a href="{% url 'shop:category_detail' category.id %}">{{ category.name }}</a>
+                    <ul>
+                        {% for product in category.products.all %}
+                            <li><a href="{% url 'shop:product_detail' product.id %}">{{ product.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
         </ul>
-      </li>
-    {% endfor %}
-  </ul>
+    {% endif %}
 {% endblock %}
-
-</body>
-</html>

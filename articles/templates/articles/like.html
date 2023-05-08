@@ -1,5 +1,8 @@
+{% if article.id in favorite_article %}
+    <p>....</p>
+{% endif %}
 
-<h1>{{article.title}}</h1>
-<h2>Author: {{article.author}}</h2>
-<p>{{article.text}}</p>
-<p><strong>Likes: {{ article.like_count }}</strong></p>
+<h1>Title:{{article.title}}</h1>
+<h3>Author:{{article.author}}</h3>
+<h3>Text:{{article.text}}</h3>
+<p>Like:{{article.like_count}}</p>

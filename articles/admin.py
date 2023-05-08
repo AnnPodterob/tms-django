@@ -13,4 +13,4 @@ class ArticleAdmin(admin.ModelAdmin):
     readonly_fields = ['like_count', 'is_popular']
     search_fields = ['title', 'author', 'text']
     list_display = ['title', 'author', 'like_count', 'is_popular']
-    list_filter = ['title', 'author']
+    list_filter = ['title', 'author', 'like_count']
