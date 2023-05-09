@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Articles
+from .models import Articles, Author
 
 
 def index(request):
@@ -12,6 +12,11 @@ def detail(request, article_id: int):
     article = get_object_or_404(Articles, id=article_id)
     context = {'article': article}
     return render(request, 'articles/detail.html', context)
+
+def author_detail(request, author_id: int):
+    return render(request, 'articles/author_detail.html', {
+        'author': get_object_or_404(Author, id=author_id),
+    })
 
 
 def like(request):
