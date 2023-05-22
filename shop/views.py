@@ -86,10 +86,11 @@ def place_order(request):
     profile.save()
     return render(request, 'shop/cart.html', {'order': order})
     # profile = request.user.profile
-    # order = Order.objects.get(profile=profile)
+    # order = profile.shopping_cart
     # order.status = OrderStatus.COMPLETED
     # order.save()
-    # request.user.orders.add(order)
+    # profile.shopping_cart = Order.objects.create(profile=profile)
+    # profile.save()
     # Order.objects.create(profile=profile)
     # messages.success(request, 'Заказ успешно оформлен')
     # return redirect('shop:cart')
