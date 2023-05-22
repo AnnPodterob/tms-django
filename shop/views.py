@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Category, Product
-from .models import Order, OrderEntry
+from .models import Order, OrderEntry, OrderStatus
 from .models import Profile
+from django.contrib import messages
+
 
 
 def index(request):
@@ -55,3 +57,39 @@ def add_to_cart(request):
     # order.save()
     return redirect('shop:product_detail', product_id)
 
+@login_required
+def cart(request):
+    # order = Order.objects.get_or_create(user=request.user)[0]
+    order_entries = OrderEntry.objects.all()
+    total_price = sum(entry.total_price for entry in order_entries)
+    context = {
+        'order_entries': order_entries,
+        'total_price': total_price,
+    }
+    request.user.profile.en_shopping_cart()
+    return render(request, 'shop/cart.html', context)
+
+@login_required
+def clear_cart(request):
+    profile = request.user.profile
+    order = profile.shopping_cart
+    OrderEntry.objects.filter(order=order).delete()
+    return redirect('shop:cart')
+
+@login_required
+def place_order(request):
+    profile = request.user.profile
+    order = profile.shopping_cart
+    order.status = OrderStatus.COMPLETED
+    order.save()
+    profile.shopping_cart = Order.objects.create(profile=profile)
+    profile.save()
+    return render(request, 'shop/cart.html', {'order': order})
+    # profile = request.user.profile
+    # order = Order.objects.get(profile=profile)
+    # order.status = OrderStatus.COMPLETED
+    # order.save()
+    # request.user.orders.add(order)
+    # Order.objects.create(profile=profile)
+    # messages.success(request, 'Заказ успешно оформлен')
+    # return redirect('shop:cart')

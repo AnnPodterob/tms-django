@@ -1,0 +1,30 @@
+{% extends 'shop/base.html' %}
+
+{% block body %}
+  <h1>Моя Корзина</h1>
+  {% if order_entries %}
+    <ul>
+      {% for entry in order_entries %}
+        <li>
+          <a href="{% url 'shop:product_detail' entry.product.id %}">
+            {{ entry.product.name }} ({{ entry.count }})
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+    <p>Сумма заказа: {{ total_price }}</p>
+
+    <form method="POST" action="{% url 'shop:clear_cart' %}">
+      {% csrf_token %}
+      <button type="submit">Очистить заказ</button>
+    </form>
+
+    <form method="post" action="{% url 'shop:place_order' %}">
+      {% csrf_token %}
+      <button type="submit">Оформить заказ</button>
+    </form>
+
+  {% else %}
+    <p>Ваша корзина пуста</p>
+  {% endif %}
+{% endblock %}

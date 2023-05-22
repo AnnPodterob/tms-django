@@ -29,15 +29,24 @@ class Profile(models.Model):
             self.save()
         return self.shopping_cart
 
+class OrderStatus(models.TextChoices):
+    INITIAL = 'INITIAL',
+    COMPLETED = 'COMPLETED',
+    DELIVERED = 'DELIVERED',
 
 class OrderEntry(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='+')
     count = models.IntegerField(default=0)
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='order_entries')
 
+    @property
+    def total_price(self):
+        return self.product.price * self.count
+
+
 class Order(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='orders')
-    status = models.CharField(max_length=20, default='INITIAL')
+    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.INITIAL)
 
     def add_product(self, product: Product):
         order_entry = self.order_entries.filter(product=product).first()
