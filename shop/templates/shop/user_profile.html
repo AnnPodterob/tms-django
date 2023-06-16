@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+
+{% block body %}
+<h1>Profile</h1>
+<p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+
+<h2>Recent Orders</h2>
+{% if orders %}
+    <ul>
+    {% for order in orders %}
+        <li>Status: {{ order.status }} | Total Amount: ${{ order.price }} | Total Items: {{ order.product_count }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No recent orders.</p>
+{% endif %}
+
+<li><a href="{% url 'shop:order_history' %}">История заказов</a></li>
+
+<a href="{% url 'shop:update_profile' %}">Update Profile</a>
+{% endblock %}

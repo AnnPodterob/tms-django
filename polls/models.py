@@ -7,6 +7,7 @@ from django.contrib import admin
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published', db_index=True)
+    view_count = models.IntegerField(default=0)
     # best_choice = models.OneToOneField('Choice', null=True, on_delete=models.SET_NULL, related_name='best_question')
 
     def __str__(self):

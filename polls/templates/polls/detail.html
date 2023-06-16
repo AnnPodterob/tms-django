@@ -24,6 +24,7 @@
         {% csrf_token %}
         <fieldset>
             <legend><h1>{{ question.question_text }}</h1></legend>
+            <p>View count: &#128065; {{ question.view_count }}</p>
             {% if error_message %}
                 <p><strong>{{ error_message }}</strong></p>
             {% endif %}
@@ -37,6 +38,7 @@
         </fieldset>
         <input type="submit" value="Vote"/>
     </form>
+
 {% endblock %}
 </body>
 </html>

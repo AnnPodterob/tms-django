@@ -1,30 +1,43 @@
 {% extends 'shop/base.html' %}
 
 {% block body %}
-  <h1>Моя Корзина</h1>
+  <h1>Shopping Cart</h1>
   {% if order_entries %}
     <ul>
       {% for entry in order_entries %}
         <li>
           <a href="{% url 'shop:product_detail' entry.product.id %}">
-            {{ entry.product.name }} ({{ entry.count }})
+            {{ entry.product.name }} ({{ entry.count }}) -- {{ entry.price }}$
           </a>
         </li>
+
+      <form action="{% url 'shop:edit_count_order_entry' %}" method="post">
+          {% csrf_token %}
+          <input type="text" value={{entry.count}} name="entry_count">
+          <input type="submit" value="Apply">
+          <input type="hidden" value={{entry.id}} name="entry_id">
+      </form>
+      <form action="{% url 'shop:delete_order_entry' %}" method="post">
+          {% csrf_token %}
+          <input type="submit" value="Delete">
+          <input type="hidden" value={{entry.id}} name="entry_id">
+      </form>
+
       {% endfor %}
     </ul>
     <p>Сумма заказа: {{ total_price }}</p>
 
-    <form method="POST" action="{% url 'shop:clear_cart' %}">
-      {% csrf_token %}
-      <button type="submit">Очистить заказ</button>
+    <form action="{% url 'shop:submit_order' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Submit Order" class="btn btn-primary">
     </form>
 
-    <form method="post" action="{% url 'shop:place_order' %}">
-      {% csrf_token %}
-      <button type="submit">Оформить заказ</button>
+    <form action="{% url 'shop:delete_order_entries' %}" method="post">
+        {% csrf_token %}
+            <input type="submit" value="Clear Basket" class="btn btn-danger">
     </form>
 
   {% else %}
-    <p>Ваша корзина пуста</p>
+    <i>Shopping cart is empty</i>
   {% endif %}
 {% endblock %}

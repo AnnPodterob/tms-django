@@ -9,6 +9,12 @@ from django.db.models import signals
 
 from .models import Question, Choice
 from .forms import QuestionForm
+from django.http import HttpResponse
+from django.views import View
+
+from django.views.decorators.cache import cache_page
+from .jobs import increase_view_count
+
 
 # Create your views here.
 
@@ -20,7 +26,7 @@ def logging_callback(**kwargs):
 # signals.pre_save.connect(logging_callback)
 # signals.post_save.connect(logging_callback)
 
-
+@cache_page(5)
 def index(request):
     questions = Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
     context = {'latest_question_list': questions}
@@ -35,7 +41,9 @@ def index(request):
 #     return render(request, 'polls/detail.html', context)
 
 def detail(request, question_id: int):
+    # increase_view_count.delay(question_id)
     question = get_object_or_404(Question, id=question_id, pub_date__lte=timezone.now())
+    increase_view_count.delay(question)
     context = {'question': question}
     return render(request, 'polls/detail.html', context)
 
@@ -77,4 +85,5 @@ def create_question(request):
     else:
         form = QuestionForm()
     return render(request, 'polls/create_question.html', {'form': form})
+
 

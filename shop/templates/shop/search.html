@@ -1,0 +1,24 @@
+{% extends 'shop/base.html' %}
+
+{% block body %}
+    {% if not products %}
+        <h1>This product is not in our store!</h1>
+    {% endif %}
+
+    {% for product in page_obj %}
+
+         <a href="{% url 'shop:product_detail' product.id %}"><h3> {{product.name}} </h3></a>
+
+    {% endfor %}
+
+
+      <ul>
+        {% for page in page_obj.paginator.page_range %}
+            <li>
+                <a href="?page={{p}}" > {{ page }} </a>
+            </li>
+        {% endfor %}
+      </ul>
+
+
+{% endblock %}
